@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NBA | Minimal</title>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --fg: #16181d;
+    --muted: #6b7280;
+    --line: #e5e5e3;
+    --accent: #e8531e;
+    --card: #ffffff;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1115;
+    --fg: #f1f1ef;
+    --muted: #9aa0ab;
+    --line: #24272e;
+    --accent: #ff7a3d;
+    --card: #161920;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    transition: background .3s, color .3s;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 1.25rem 4.5rem;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, #0b1d3a 0%, #1d428a 55%, #c8102e 100%);
+  }
+  header::before, header::after {
+    content: "";
+    position: absolute;
+    border: 2px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+  }
+  header::before { width: 520px; height: 520px; top: -260px; left: -140px; }
+  header::after  { width: 360px; height: 360px; bottom: -200px; right: -80px; border-color: rgba(255,122,61,.35); }
+  .ball {
+    width: 64px; height: 64px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    background:
+      linear-gradient(90deg, transparent 47%, rgba(0,0,0,.45) 47% 53%, transparent 53%),
+      linear-gradient(0deg,  transparent 47%, rgba(0,0,0,.45) 47% 53%, transparent 53%),
+      radial-gradient(circle at 30% 30%, #ff9a5c, #e8531e 70%);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    animation: rebote 1.6s ease-in-out infinite;
+  }
+  @keyframes rebote { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  header h1 {
+    position: relative;
+    font-size: clamp(3rem, 12vw, 6rem);
+    font-weight: 800;
+    letter-spacing: .35em;
+    padding-left: .35em;
+  }
+  header p {
+    position: relative;
+    margin-top: .5rem;
+    font-size: 1rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    opacity: .8;
+  }
+  #temaBtn {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    z-index: 2;
+    background: rgba(255,255,255,.14);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+    padding: .4rem .9rem;
+    font-size: .8rem;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+  }
+  #temaBtn:hover { background: rgba(255,255,255,.28); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  section { margin-bottom: 3.5rem; }
+  h2 {
+    font-size: .85rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .intro { color: var(--muted); max-width: 60ch; margin-bottom: 1.25rem; }
+
+  /* VIDEO */
+  .video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid var(--line);
+  }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-form { display: flex; gap: .5rem; margin-top: .75rem; flex-wrap: wrap; }
+  input[type="text"], input[type="search"] {
+    flex: 1; min-width: 200px;
+    padding: .6rem .9rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--fg);
+    font-size: .95rem;
+  }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button.btn {
+    padding: .6rem 1.1rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.btn:hover { filter: brightness(1.08); }
+  #msg { margin-top: .5rem; font-size: .85rem; color: var(--muted); min-height: 1.2em; }
+
+  /* TABLA */
+  .tabla-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  th, td { padding: .85rem 1rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { cursor: pointer; user-select: none; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  th:hover { color: var(--accent); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: rgba(232,83,30,.07); }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .barra { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); vertical-align: middle; margin-left: .6rem; }
+  .tabla-meta { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: .75rem; font-size: .85rem; color: var(--muted); }
+
+  footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="temaBtn" onclick="toggleTema()">Modo oscuro</button>
+  <div class="ball"></div>
+  <h1>NBA</h1>
+  <p>National Basketball Association</p>
+</header>
+
+<main>
+  <section>
+    <h2>Video</h2>
+    <p class="intro">Las mejores jugadas de la temporada 2025-26. Pega otro enlace de YouTube abajo para cambiar el video.</p>
+    <div class="video">
+      <iframe id="player"
+        src="https://www.youtube.com/embed/sLWrGJjJIsM"
+        title="Reproductor de YouTube"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="video-form">
+      <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
+      <button class="btn" onclick="cambiarVideo()">Cambiar video</button>
+    </div>
+    <p id="msg"></p>
+  </section>
+
+  <section>
+    <h2>Campeonatos por franquicia</h2>
+    <p class="intro">Franquicias con más títulos de la NBA. Haz clic en un encabezado para ordenar y usa el buscador para filtrar.</p>
+    <input type="search" id="buscador" placeholder="Buscar equipo o ciudad..." oninput="filtrarTabla()" style="width:100%; margin-bottom:.75rem;">
+    <div class="tabla-wrap">
+      <table id="tabla">
+        <thead>
+          <tr>
+            <th onclick="ordenarTabla(0)">Equipo</th>
+            <th onclick="ordenarTabla(1)">Ciudad</th>
+            <th onclick="ordenarTabla(2)">Fundación</th>
+            <th onclick="ordenarTabla(3)">Títulos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Boston Celtics</td><td>Boston</td><td class="num">1946</td><td class="num" data-v="18">18</td></tr>
+          <tr><td>Los Angeles Lakers</td><td>Los Ángeles</td><td class="num">1947</td><td class="num" data-v="17">17</td></tr>
+          <tr><td>Golden State Warriors</td><td>San Francisco</td><td class="num">1946</td><td class="num" data-v="7">7</td></tr>
+          <tr><td>Chicago Bulls</td><td>Chicago</td><td class="num">1966</td><td class="num" data-v="6">6</td></tr>
+          <tr><td>San Antonio Spurs</td><td>San Antonio</td><td class="num">1967</td><td class="num" data-v="5">5</td></tr>
+          <tr><td>Miami Heat</td><td>Miami</td><td class="num">1988</td><td class="num" data-v="3">3</td></tr>
+          <tr><td>Detroit Pistons</td><td>Detroit</td><td class="num">1941</td><td class="num" data-v="3">3</td></tr>
+          <tr><td>Philadelphia 76ers</td><td>Filadelfia</td><td class="num">1946</td><td class="num" data-v="3">3</td></tr>
+          <tr><td>New York Knicks</td><td>Nueva York</td><td class="num">1946</td><td class="num" data-v="2">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tabla-meta">
+      <span id="conteo"></span>
+      <span>Fundación: año de origen de la franquicia.</span>
+    </div>
+  </section>
+</main>
+
+<footer>Página no oficial hecha con fines informativos. NBA es marca registrada de sus propietarios.</footer>
+
+<script>
+  /* 1) Cambiar el video de YouTube a partir de cualquier enlace */
+  function extraerIdYouTube(url) {
+    const patrones = [
+      /[?&]v=([\w-]{11})/,
+      /youtu\.be\/([\w-]{11})/,
+      /embed\/([\w-]{11})/,
+      /shorts\/([\w-]{11})/
+    ];
+    for (const p of patrones) {
+      const m = url.match(p);
+      if (m) return m[1];
+    }
+    return null;
+  }
+  function cambiarVideo() {
+    const input = document.getElementById("urlInput");
+    const msg = document.getElementById("msg");
+    const id = extraerIdYouTube(input.value.trim());
+    if (!id) {
+      msg.textContent = "Enlace no válido. Pega una URL de YouTube.";
+      return;
+    }
+    document.getElementById("player").src = "https://www.youtube.com/embed/" + id;
+    msg.textContent = "Video actualizado.";
+    input.value = "";
+  }
+
+  /* 2) Filtrar filas de la tabla por texto */
+  function filtrarTabla() {
+    const q = document.getElementById("buscador").value.toLowerCase();
+    const filas = document.querySelectorAll("#tabla tbody tr");
+    let visibles = 0;
+    filas.forEach(f => {
+      const coincide = f.textContent.toLowerCase().includes(q);
+      f.style.display = coincide ? "" : "none";
+      if (coincide) visibles++;
+    });
+    document.getElementById("conteo").textContent = visibles + " de " + filas.length + " equipos";
+  }
+
+  /* 3) Ordenar la tabla por columna (alterna ascendente y descendente) */
+  const orden = {};
+  function ordenarTabla(col) {
+    const tbody = document.querySelector("#tabla tbody");
+    const filas = Array.from(tbody.rows);
+    orden[col] = !orden[col];
+    filas.sort((a, b) => {
+      let x = a.cells[col].dataset.v || a.cells[col].textContent;
+      let y = b.cells[col].dataset.v || b.cells[col].textContent;
+      const nx = parseFloat(x), ny = parseFloat(y);
+      const cmp = (!isNaN(nx) && !isNaN(ny)) ? nx - ny : x.localeCompare(y, "es");
+      return orden[col] ? cmp : -cmp;
+    });
+    filas.forEach(f => tbody.appendChild(f));
+  }
+
+  /* 4) Alternar modo claro y oscuro */
+  function toggleTema() {
+    const root = document.documentElement;
+    const oscuro = root.getAttribute("data-theme") === "dark";
+    root.setAttribute("data-theme", oscuro ? "light" : "dark");
+    document.getElementById("temaBtn").textContent = oscuro ? "Modo oscuro" : "Modo claro";
+  }
+
+  /* Barras de títulos y conteo inicial */
+  document.querySelectorAll("#tabla tbody tr").forEach(f => {
+    const celda = f.cells[3];
+    const barra = document.createElement("span");
+    barra.className = "barra";
+    barra.style.width = (celda.dataset.v * 6) + "px";
+    celda.appendChild(barra);
+  });
+  filtrarTabla();
+</script>
+</body>
+</html>
